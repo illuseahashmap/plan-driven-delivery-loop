@@ -20,6 +20,9 @@ Use only the artifacts that fit the selected track. Keep IDs stable across the w
 ## Workflow checkpoint
 - Current stage: <1-11>
 - Branch/base commit: <branch>/<SHA>
+- Delivery mode: <remote-authorized | local-only | pending>
+- Commit authorization: <yes | no | pending; evidence>
+- Push authorization: <yes | no | pending; remote/upstream>
 - Requirement/task/evidence IDs: <IDs or artifact path>
 ```
 

@@ -43,6 +43,8 @@
 - 记录单元测试命令、退出码、数量及基线差异；
 - 在真实浏览器里验证用户可见结果、控制台和网络错误；
 - 使用 `P1/P2/P3` 和 `PASS/CONCERNS/FAIL` 完成问题审查；
+- 在流程开始阶段确认提交和推送授权，避免到交付阶段才发现无法闭环；
+- 必需的集成测试或容器测试无法执行时，只能标记为“部分验证”或“阻塞”，不能声称验证完成；
 - 只有在获得授权后才允许推送远端，禁止强推和无关提交；
 - 推送后重新读取短期计划，确认下一项依赖已满足的任务。
 
@@ -69,6 +71,12 @@ cp -R plan-driven-delivery-loop ~/.codex/skills/plan-driven-delivery-loop
 使用 $plan-driven-delivery-loop，执行当前仓库短期计划中的下一项可执行任务。
 ```
 
+如需完成远端交付，请明确授权：
+
+```text
+使用 $plan-driven-delivery-loop 完成当前任务，包括问题审查、创建聚焦提交并推送到当前上游；本请求授权该范围内的 Git 交付。
+```
+
 ## 工作流模板
 
 - [工件模板](references/artifact-templates.md)
@@ -76,7 +84,7 @@ cp -R plan-driven-delivery-loop ~/.codex/skills/plan-driven-delivery-loop
 
 ## 安全边界
 
-该 skill 不会自动获得部署、发送外部消息、删除无关文件、改写 Git 历史或推送远端的权限。远端写入必须由用户或仓库工作流明确授权。
+该 skill 不会自动获得部署、发送外部消息、删除无关文件、改写 Git 历史或推送远端的权限。仅调用 skill 不代表授权远端写入。skill 会在流程开始阶段确认提交和推送意图；远端写入必须由用户或仓库工作流明确授权。
 
 ## 贡献
 

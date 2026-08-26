@@ -52,6 +52,8 @@ flowchart TB
 - User-facing changes are exercised in a real browser with an explicit success oracle.
 - Plans are updated only after verification passes.
 - Issue review uses `P1` / `P2` / `P3` findings and `PASS` / `CONCERNS` / `FAIL` decisions.
+- Commit and push intent is confirmed near the start, so delivery cannot become a last-minute surprise.
+- Missing required integration or container tests are reported as partial/blocked verification, never as a complete pass.
 - Remote pushes require explicit authorization; force-push and unrelated changes are prohibited.
 - The loop ends by re-reading the short-term plan from disk and identifying the next actionable task.
 
@@ -82,7 +84,8 @@ Or invoke it naturally:
 
 ```text
 Follow the plan-driven delivery loop for this feature, including unit tests,
-real browser verification, issue review, plan updates, and an authorized push.
+real browser verification, issue review, plan updates, a focused commit, and a
+push to the current upstream. This request authorizes that scoped Git delivery.
 ```
 
 ## Workflow artifacts
@@ -100,7 +103,7 @@ See [artifact templates](references/artifact-templates.md) and [stage checklists
 
 ## Safety boundaries
 
-This workflow does not grant permission to deploy, send external messages, rewrite Git history, remove unrelated files, or push to a remote. Remote writes must already be authorized by the user or repository workflow.
+This workflow does not grant permission to deploy, send external messages, rewrite Git history, remove unrelated files, or push to a remote. Invoking the skill alone is not remote-write authorization. The skill checks commit and push intent near the start; remote writes must be explicitly authorized by the user or repository workflow.
 
 ## Inspired by
 

@@ -5,6 +5,9 @@ Use these checks for cross-cutting, risky, blocked, or resumed work. Prefer proj
 ## Plan intake
 
 - Record the exact short-term and long-term plan paths and last known task state.
+- Record delivery mode as `remote-authorized`, `local-only`, or `pending`; record commit and push authorization separately as `yes`, `no`, or `pending`, together with the target branch and upstream.
+- Treat explicit requests to commit and push, deliver to the remote, or complete the loop through remote delivery as scoped authorization. Skill invocation or a generic request to fix/solve work is not remote-write authorization.
+- If Git delivery intent is pending, tell the user and ask once near the start instead of surprising them at the delivery gate.
 - Keep task IDs immutable once requirements, commits, or tests refer to them.
 - Treat `blocked` as requiring an owner and unblock trigger; treat `later` as deferred work with a resume condition, not as completed work.
 - If a summary/dashboard is generated from plans, update it through the project's generator rather than editing it manually.
@@ -23,6 +26,7 @@ Use these checks for cross-cutting, risky, blocked, or resumed work. Prefer proj
 - Prefer small increments. After each increment, inspect the diff and update the task checklist.
 - For testable behavior, prove the test fails for the missing/broken behavior before relying on its passing result when practical.
 - Run targeted tests before the broader suite. Record skipped tests and environmental limitations separately from passes.
+- Call verification `partial` or `blocked` when a required integration, container, or broader check cannot run; record the missing dependency, owner, and unblock action.
 - Never modify assertions, snapshots, or fixtures solely to hide a product defect.
 
 ## Browser-test gate
@@ -46,9 +50,10 @@ Use these checks for cross-cutting, risky, blocked, or resumed work. Prefer proj
 - Label findings `P1` (blocking), `P2` (important), or `P3` (minor); include location/evidence, impact, and disposition.
 - Return each P1/P2 to the responsible stage and rerun affected verification after fixes.
 - Allow delivery only on `PASS`, or `CONCERNS` when residual risk is explicit and accepted by the authorized decision maker.
+- Require complete mandatory verification evidence for `PASS`; an environment-blocked required check cannot be silently treated as a pass.
 
 ## Delivery gate
 
-- Before commit: check diff scope, staged paths, secrets, generated files, tests, browser evidence, plan synchronization, and issue-review disposition.
+- Before commit: re-check local commit authorization, diff scope, staged paths, secrets, generated files, tests, browser evidence, plan synchronization, and issue-review disposition.
 - Before push: confirm authorization, branch, remote, and upstream. Never force-push or bypass required hooks.
 - After push: record commit SHA and verify the remote ref. Re-read the short-term plan from disk and identify the next dependency-ready task.

@@ -1,4 +1,4 @@
 interface:
   display_name: "Plan-Driven Delivery Loop"
   short_description: "Plan-driven development from roadmap to verified push"
-  default_prompt: "Use $plan-driven-delivery-loop to execute the next planned task through design, implementation, verification, issue review, plan updates, and authorized Git delivery."
+  default_prompt: "Use $plan-driven-delivery-loop to execute the next planned task. Confirm commit and push authorization near the start, then continue through design, implementation, verification, issue review, plan updates, and the authorized Git delivery gate."
