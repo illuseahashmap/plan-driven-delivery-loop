@@ -1,0 +1,87 @@
+# 计划驱动的开发交付闭环
+
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Agent Skill](https://img.shields.io/badge/agent-skill-111827)](SKILL.md)
+[![GitHub stars](https://img.shields.io/github/stars/illuseahashmap/plan-driven-delivery-loop?style=social)](https://github.com/illuseahashmap/plan-driven-delivery-loop)
+
+一个面向 Codex 等编码 Agent 的工作流 skill：让软件开发从短期计划和长期约束出发，经过需求、设计、实现、单元测试、真实浏览器测试、问题审查，最终安全地完成 Git 交付并回到下一项计划。
+
+**[English](README.md)**
+
+## 解决什么问题
+
+编码 Agent 很擅长生成代码，但持续开发时容易出现这些问题：
+
+- 只看眼前需求，偏离长期路线图；
+- 需求、设计、任务和测试之间缺少追踪关系；
+- 单元测试通过，却没有在真实浏览器中验证；
+- 测试未完成就把计划标为完成；
+- 未经过问题审查就提交推送；
+- 完成一项任务后没有重新读取计划，导致下一轮失去上下文。
+
+本 skill 将这些步骤固定成一个可恢复、可验证的闭环：
+
+```text
+查看短期计划
+→ 查看长期计划约束
+→ 需求分析
+→ 方案设计
+→ 编码实现
+→ 单元测试
+→ 实际浏览器测试
+→ 更新短期计划/长期计划
+→ 问题审查
+→ 授权后提交推送到远端
+→ 查看短期计划
+```
+
+## 核心能力
+
+- 使用稳定 ID 关联需求、任务、测试证据、问题和后续工作；
+- 检查路线图、架构原则、里程碑和 ADR 约束；
+- 对需求、设计和任务进行跨工件一致性检查；
+- 记录单元测试命令、退出码、数量及基线差异；
+- 在真实浏览器里验证用户可见结果、控制台和网络错误；
+- 使用 `P1/P2/P3` 和 `PASS/CONCERNS/FAIL` 完成问题审查；
+- 只有在获得授权后才允许推送远端，禁止强推和无关提交；
+- 推送后重新读取短期计划，确认下一项依赖已满足的任务。
+
+## 安装
+
+使用 Skills CLI：
+
+```bash
+npx skills add illuseahashmap/plan-driven-delivery-loop@plan-driven-delivery-loop
+```
+
+Codex 也可以手动安装：
+
+```bash
+git clone https://github.com/illuseahashmap/plan-driven-delivery-loop.git
+cp -R plan-driven-delivery-loop ~/.codex/skills/plan-driven-delivery-loop
+```
+
+下一轮对话即可使用。
+
+## 使用
+
+```text
+使用 $plan-driven-delivery-loop，执行当前仓库短期计划中的下一项可执行任务。
+```
+
+## 工作流模板
+
+- [工件模板](references/artifact-templates.md)
+- [阶段检查清单](references/stage-checklists.md)
+
+## 安全边界
+
+该 skill 不会自动获得部署、发送外部消息、删除无关文件、改写 Git 历史或推送远端的权限。远端写入必须由用户或仓库工作流明确授权。
+
+## 贡献
+
+欢迎提交 Issue 和 Pull Request。提出流程变更前请阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+## 许可证
+
+[MIT](LICENSE)
