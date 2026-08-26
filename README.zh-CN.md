@@ -46,7 +46,7 @@
 - 在流程开始阶段确认提交和推送授权，避免到交付阶段才发现无法闭环；
 - 必需的集成测试或容器测试无法执行时，只能标记为“部分验证”或“阻塞”，不能声称验证完成；
 - 只有在获得授权后才允许推送远端，禁止强推和无关提交；
-- 推送后重新读取短期计划，确认下一项依赖已满足的任务。
+- 推送后重新读取短期计划；若计划文件不存在，则重新核对用户请求、仓库规则和本轮工作摘要，再确认下一项依赖已满足的任务。
 
 ## 安装
 
@@ -59,17 +59,20 @@ npx skills add illuseahashmap/plan-driven-delivery-loop@plan-driven-delivery-loo
 Codex 也可以手动安装：
 
 ```bash
-git clone https://github.com/illuseahashmap/plan-driven-delivery-loop.git
-cp -R plan-driven-delivery-loop ~/.codex/skills/plan-driven-delivery-loop
+mkdir -p "$HOME/.agents/skills"
+git clone https://github.com/illuseahashmap/plan-driven-delivery-loop.git \
+  "$HOME/.agents/skills/plan-driven-delivery-loop"
 ```
 
-下一轮对话即可使用。
+`$HOME/.agents/skills` 是 OpenAI 当前推荐的用户级目录。旧版 Codex 可能使用 `$HOME/.codex/skills`；只有当前版本无法发现 `.agents/skills` 时才使用旧目录，并避免同时安装两份同名 skill。若安装后未出现，请重启 Codex。
 
 ## 使用
 
 ```text
 使用 $plan-driven-delivery-loop，执行当前仓库短期计划中的下一项可执行任务。
 ```
+
+该 skill 仅支持显式调用，不会因普通的功能开发、缺陷修复或重构请求自动触发。
 
 如需完成远端交付，请明确授权：
 
@@ -78,6 +81,8 @@ cp -R plan-driven-delivery-loop ~/.codex/skills/plan-driven-delivery-loop
 ```
 
 ## 工作流模板
+
+仓库没有计划文件时，Fast 模式直接使用用户请求和仓库规则，不强制创建计划体系；Standard 模式可使用轻量工作摘要；High-risk 模式只有在缺失决策会实质影响安全或设计时才暂停。
 
 - [工件模板](references/artifact-templates.md)
 - [阶段检查清单](references/stage-checklists.md)

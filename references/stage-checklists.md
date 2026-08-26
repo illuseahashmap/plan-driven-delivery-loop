@@ -11,7 +11,11 @@ Use these checks for Standard, High-risk, cross-cutting, blocked, or resumed wor
 
 ## Plan intake
 
-- Record the exact short-term and long-term plan paths and last known task state.
+- Record the exact short-term and long-term plan paths and last known task state, or record `not found` plus the fallback constraint sources used.
+- If no plan files exist, inspect the explicit user request, `AGENTS.md` and other repository instructions, issue/task context, architecture docs, ADRs, code, and test conventions before deciding whether information is missing.
+- Fast work must not create a planning hierarchy merely because dedicated plan files are absent.
+- Standard work may use a lightweight checkpoint/working brief; persist a new plan only when repository convention, coordination needs, complexity, or the user requires it.
+- High-risk work pauses only when absent governance, ownership, migration, rollback, or risk decisions materially affect the solution—not solely because filenames such as `ROADMAP.md` are missing.
 - Record delivery mode as `remote-authorized`, `local-only`, or `pending`; record commit and push authorization separately as `yes`, `no`, or `pending`, together with the target branch and upstream.
 - Treat explicit requests to commit and push, deliver to the remote, or complete the loop through remote delivery as scoped authorization. Skill invocation or a generic request to fix/solve work is not remote-write authorization.
 - If Git delivery intent is pending, tell the user and ask once near the start instead of surprising them at the delivery gate.
@@ -47,7 +51,7 @@ Use these checks for Standard, High-risk, cross-cutting, blocked, or resumed wor
 
 ## Plan synchronization gate
 
-- Synchronize short-term status after every verification attempt, not only after success.
+- Synchronize the short-term plan or fallback working brief after every verification attempt, not only after success.
 - Use `done` only when required acceptance criteria and verification pass.
 - Use `in-progress` or `partial` when work or evidence remains incomplete but a safe next action exists.
 - Use `blocked` when safe progress cannot continue; record owner, cause, impact, and unblock trigger.

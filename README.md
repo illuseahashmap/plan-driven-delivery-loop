@@ -48,7 +48,7 @@ Re-read short-term plan → next task / repeat
 - Commit and push intent is confirmed near the start, so delivery cannot become a last-minute surprise.
 - Missing required integration or container tests are reported as partial/blocked verification, never as a complete pass.
 - Remote pushes require explicit authorization; force-push and unrelated changes are prohibited.
-- The loop ends by re-reading the short-term plan from disk and identifying the next actionable task.
+- The loop ends by re-reading the short-term plan—or the request, repository rules, and working brief when no plan file exists—and identifying the next actionable task.
 
 ## Install
 
@@ -61,11 +61,12 @@ npx skills add illuseahashmap/plan-driven-delivery-loop@plan-driven-delivery-loo
 For Codex, you can also install manually:
 
 ```bash
-git clone https://github.com/illuseahashmap/plan-driven-delivery-loop.git
-cp -R plan-driven-delivery-loop ~/.codex/skills/plan-driven-delivery-loop
+mkdir -p "$HOME/.agents/skills"
+git clone https://github.com/illuseahashmap/plan-driven-delivery-loop.git \
+  "$HOME/.agents/skills/plan-driven-delivery-loop"
 ```
 
-The skill becomes available on the next agent turn.
+`$HOME/.agents/skills` is the current OpenAI-recommended user scope. Older Codex builds may use `$HOME/.codex/skills`; use that legacy location only when your installed version does not discover `.agents/skills`, and avoid installing both copies because duplicate skill names may both appear. Restart Codex if a newly installed skill is not detected.
 
 ## Use
 
@@ -73,17 +74,17 @@ The skill becomes available on the next agent turn.
 Use $plan-driven-delivery-loop to implement the next actionable item in this repository.
 ```
 
-Or invoke it naturally:
+This skill is explicit-only and will not activate for ordinary feature, bug-fix, or refactor prompts. For scoped remote delivery, keep the explicit invocation and authorization in the same request:
 
 ```text
-Follow the plan-driven delivery loop for this feature, including unit tests,
-real browser verification, issue review, plan updates, a focused commit, and a
-push to the current upstream. This request authorizes that scoped Git delivery.
+Use $plan-driven-delivery-loop for this feature, including relevant verification,
+plan synchronization, issue review, a focused commit, and a push to the current
+upstream. This request authorizes that scoped Git delivery.
 ```
 
 ## Workflow artifacts
 
-The skill prefers existing repository conventions. When a project has no workflow format, it provides reusable templates for:
+The skill prefers existing repository conventions. If no plan files exist, Fast work uses the user request and repository rules without creating a planning system; Standard work may keep a lightweight working brief; High-risk work pauses only when missing decisions materially affect safety or design. When durable workflow artifacts are warranted, templates are available for:
 
 - plan checkpoints and resumable stage state;
 - requirements and acceptance criteria;

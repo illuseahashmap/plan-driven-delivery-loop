@@ -1,19 +1,29 @@
 ---
 name: plan-driven-delivery-loop
-description: Run an adaptive, plan-driven software delivery loop that scales requirements, design, verification, review, and authorized Git delivery to the change's risk.
+description: Run the adaptive plan-driven delivery loop only when explicitly invoked as $plan-driven-delivery-loop; do not activate for ordinary feature, bug-fix, or refactor requests.
 metadata:
   short-description: Adaptive plan-driven delivery loop
 ---
 
 # Plan-Driven Delivery Loop
 
-Use this skill when the user wants a feature, bug fix, refactor, or other software change managed as a complete delivery loop. Preserve this order of concerns:
+Use this skill only when the user explicitly invokes `$plan-driven-delivery-loop` for a software change. Preserve this order of concerns:
 
 **查看短期计划 → 查看长期计划约束 → 需求/设计 → 编码实现 → 适当验证 → 同步计划状态 → 问题审查 → 授权 Git 交付 → 查看短期计划**
 
 The quality gates are invariant; the ceremony is not. Merge adjacent concerns for small work when no decision, evidence, or authorization boundary is hidden. Do not emit eleven headings or create workflow artifacts merely to prove compliance. Expand the process when ambiguity, blast radius, irreversibility, or repository policy makes additional evidence valuable.
 
 At the start, choose an execution track and establish a resumable checkpoint containing: selected task ID, current concern, short- and long-term plan paths, branch, base commit, and Git delivery intent. Record delivery mode as `remote-authorized`, `local-only`, or `pending`, plus separate `yes` / `no` / `pending` authorization for commit and push. A direct request to commit and push, deliver to the remote, or execute the complete loop through remote delivery authorizes only the focused changes for the identified branch and upstream. Merely invoking this skill or asking to fix, solve, or complete a task does not authorize remote writes. Surface pending intent near the start rather than surprising the user at delivery.
+
+## Missing plan files
+
+Search for existing plan and governance sources before choosing a fallback, including repository instructions such as `AGENTS.md`, task files, roadmaps, ADRs, architecture docs, issue context, and test conventions. Absence of a dedicated short- or long-term plan is not automatically a blocker.
+
+- **Fast** — use the explicit user request, repository instructions, and existing code/tests as this run's constraints. Record that no plan file was found; do not create a planning system or standalone plan artifact for a small change.
+- **Standard** — derive a lightweight working brief in the workflow checkpoint or handoff. Create a durable plan file only when repository convention, user request, coordination needs, or task complexity justifies it.
+- **High-risk** — continue without dedicated plan files only when requirements and governing constraints are still sufficiently clear. If missing ownership, policy, architecture, migration, rollback, or risk decisions could materially change the solution, pause for those decisions before implementation.
+
+When no plan file exists, “synchronize plan status” means update the working brief/handoff with outcome, evidence, blockers, and next action. “Re-read the short-term plan” means re-read the user request, applicable repository instructions, and the recorded working brief from source rather than relying on conversation memory.
 
 ## Execution tracks
 
@@ -27,14 +37,14 @@ When uncertain, choose `Standard`. Escalate tracks when implementation reveals g
 
 Move through these concerns in order. A Fast-track update may combine several concerns in one action and one report.
 
-1. **计划与授权** — read the active short-term plan from disk, identify the dependency-ready task and definition of done, then read the applicable roadmap, architecture, milestone, and ADR constraints. Resolve conflicts before coding. Record track choice, branch/base, and delivery authorization.
+1. **计划与授权** — read the active short-term plan from disk when present, identify the dependency-ready task and definition of done, then read applicable repository instructions, roadmap, architecture, milestone, and ADR constraints. Apply the missing-plan fallback when dedicated files do not exist. Resolve conflicts before coding. Record track choice, branch/base, source constraints, and delivery authorization.
 2. **需求与设计** — define observable acceptance criteria and the smallest coherent approach. Fast work may use a few inline bullets. Standard/High-risk work should make scope, non-goals, affected contracts, failure behavior, verification, and consequential alternatives traceable. Obtain a design decision when a missing choice materially changes the solution.
 3. **编码实现** — establish a clean or understood baseline, preserve unrelated user changes, and implement in reviewable increments. Prefer RED → GREEN → REFACTOR for behavior changes when practical; never weaken tests to hide a defect.
 4. **适当验证** — select evidence from the acceptance criteria and risk, not from a fixed ritual. Run targeted unit tests and relevant lint/type/build checks; add broader, integration, API, container, or real-browser verification when the changed behavior requires it. User-facing behavior needs a real browser and explicit visible oracle. Backend-only work may mark browser testing `N/A` with equivalent integration/API evidence. Record exact commands, outcomes, skipped checks, and baseline failures. A required check that cannot run makes verification `partial` or `blocked`, never complete.
-5. **同步计划状态** — update the short-term plan immediately after the verification attempt, regardless of outcome. Use `done` only when required acceptance criteria and verification pass; use `in-progress` or `partial` when useful work exists but evidence or implementation remains incomplete; use `blocked` when safe progress cannot continue, with owner, reason, and unblock trigger. Update long-term plans only when roadmap, milestone, architecture direction, or constraints actually changed.
+5. **同步计划状态** — update the short-term plan or fallback working brief immediately after the verification attempt, regardless of outcome. Use `done` only when required acceptance criteria and verification pass; use `in-progress` or `partial` when useful work exists but evidence or implementation remains incomplete; use `blocked` when safe progress cannot continue, with owner, reason, and unblock trigger. Update long-term plans only when roadmap, milestone, architecture direction, or constraints actually changed.
 6. **问题审查** — keep verification and review distinct: verification demonstrates behavior; review challenges scope, design, correctness, regressions, security/privacy, compatibility, failure handling, maintainability, test validity, evidence gaps, and unrelated changes. Record `review_mode: self | independent | human`, findings as `P1/P2/P3`, and `PASS/CONCERNS/FAIL`. One correctly scoped review satisfies the gate for that diff; re-review only findings and changes made after it.
 7. **授权 Git 交付** — proceed only on `PASS`, or `CONCERNS` with explicit acceptance of residual risk. Re-check separate commit and push authorization, staged scope, secrets/generated artifacts, branch, remote, and upstream. Create a focused commit and push only within authorization. Never force-push, rewrite shared history, bypass required hooks, or include unrelated changes. Verify the remote ref and record the commit SHA.
-8. **回到短期计划** — re-read the active short-term plan from disk after delivery or a recorded local/blocked handoff. Confirm the task state and evidence, identify the next dependency-ready item, and stop unless the user requested another cycle.
+8. **回到短期计划** — re-read the active short-term plan from disk after delivery or a recorded local/blocked handoff. If no plan file exists, re-read the request, repository instructions, and working brief. Confirm the task state and evidence, identify the next dependency-ready item when one exists, and stop unless the user requested another cycle.
 
 ## Review independence
 
@@ -45,7 +55,7 @@ If independent review is unavailable, perform a fresh diff-based self-review and
 ## Stage gates
 
 - Do not begin development while the short-term/long-term plan relationship, goal, or acceptance criteria is materially ambiguous for the selected track.
-- Do not treat a plan file's existence as proof that it was reviewed; report the files and constraints actually read.
+- Do not treat a plan file's existence as proof that it was reviewed; report the files and constraints actually read. Do not treat a missing plan file as a blocker when the selected track's constraints are otherwise clear.
 - Do not let requirement, task, plan, test, and browser evidence IDs drift; traceability must survive handoff and resumption.
 - Do not mark unit or browser testing complete when a relevant check failed, was skipped, or could not run; state the blocker and its impact.
 - Do not call verification complete when a required integration or container-backed check could not run; use `partial` or `blocked` and name the unblock action.
