@@ -18,15 +18,18 @@ Use only the artifacts that fit the selected track. Keep IDs stable across the w
 - Conflict/decision: <none or decision reference>
 
 ## Workflow checkpoint
-- Current stage: <1-11>
+- Execution track: <Fast | Standard | High-risk; reason>
+- Current concern: <plan | shape | implement | verify | sync | review | deliver | resume>
 - Branch/base commit: <branch>/<SHA>
 - Delivery mode: <remote-authorized | local-only | pending>
 - Commit authorization: <yes | no | pending; evidence>
 - Push authorization: <yes | no | pending; remote/upstream>
 - Requirement/task/evidence IDs: <IDs or artifact path>
+- Verification status: <complete | partial | blocked; reason/next action>
+- Review mode: <self | independent | human; reviewer/context or limitation>
 ```
 
-Record this checkpoint at the start and repeat the short-term section after commit/push.
+Record this checkpoint at the start and repeat the short-term section after delivery or a blocked/local handoff.
 
 ## Requirements / spec
 
@@ -97,7 +100,7 @@ Acceptance criteria must be observable. Avoid criteria that only describe an imp
 | Requirement | Evidence | Result |
 |-------------|----------|--------|
 | AC-01       | test/path::name | PASS |
-| AC-02       | manual: <check> | PASS |
+| AC-02       | manual: <check> | PASS / FAIL / BLOCKED |
 
 ## Unit tests
 - Command: `<command>`
@@ -111,12 +114,15 @@ Acceptance criteria must be observable. Avoid criteria that only describe an imp
 - Preconditions: <server/auth/data/viewport>
 - Steps: <concise user-visible steps>
 - Oracle: <explicit expected user-visible outcome>
-- Result: PASS | FAIL | N/A
+- Result: PASS | FAIL | BLOCKED | N/A
 - Console/network: <clean or relevant errors>
 - Evidence: <screenshot/trace/report/observed result>
 - N/A reason and equivalent verification: <required when N/A>
 
 ## Issue review
+
+- Review mode: self | independent | human
+- Reviewer/context: <identifier or independence limitation>
 
 ### Decision
 PASS | CONCERNS | FAIL

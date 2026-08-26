@@ -1,6 +1,13 @@
 # Stage checklists
 
-Use these checks for cross-cutting, risky, blocked, or resumed work. Prefer project-specific rules when they are stricter.
+Use these checks for Standard, High-risk, cross-cutting, blocked, or resumed work. Prefer project-specific rules when they are stricter.
+
+## Track selection
+
+- Choose **Fast** only when the change is well understood, contained, reversible, and has no high-risk trigger. Keep one concise acceptance/design checkpoint and targeted evidence; do not manufacture artifact files or stage reports.
+- Choose **Standard** for ordinary features, fixes, and refactors. Keep requirements and design distinguishable and run targeted plus relevant broader verification.
+- Choose **High-risk** for auth/permissions, secrets, payments, destructive behavior, migrations, sensitive data, public contracts, concurrency, cross-service work, broad blast radius, or material ambiguity. Require explicit rollback/migration reasoning, strongest applicable verification, and independent review when available.
+- Escalate immediately if risk grows. Do not de-escalate merely because a required check is inconvenient.
 
 ## Plan intake
 
@@ -40,17 +47,27 @@ Use these checks for cross-cutting, risky, blocked, or resumed work. Prefer proj
 
 ## Plan synchronization gate
 
-- Update short-term status, evidence, residual risk, blockers, and next action in one coherent change.
+- Synchronize short-term status after every verification attempt, not only after success.
+- Use `done` only when required acceptance criteria and verification pass.
+- Use `in-progress` or `partial` when work or evidence remains incomplete but a safe next action exists.
+- Use `blocked` when safe progress cannot continue; record owner, cause, impact, and unblock trigger.
+- Record verification failures and environment limitations as evidence rather than leaving the plan stale.
 - Change long-term plans only for genuine roadmap, milestone, architecture, or constraint impact.
 
 ## Issue-review gate
 
+- Keep review separate from test execution: tests establish behavior; review challenges the change and its evidence.
+- Record `review_mode: self | independent | human`.
+- For independent review, provide requirements/plan, base/head or bounded diff, changed files, and raw evidence. Do not provide the implementer's session history or intended verdict.
+- Keep the reviewer read-only. The implementing Agent owns fixes.
+- If no independent reviewer is available, label the result `self (independence unavailable)`; High-risk delivery needs explicit acceptance of that limitation unless an equivalent repository gate exists.
 - Review requirements and long-term constraints against the final diff and evidence, not against the implementation summary alone.
 - Check correctness, regressions, edge cases, security/privacy, compatibility, failure handling, maintainability, test validity, browser console/network results, documentation, plan synchronization, and scope creep.
 - Label findings `P1` (blocking), `P2` (important), or `P3` (minor); include location/evidence, impact, and disposition.
 - Return each P1/P2 to the responsible stage and rerun affected verification after fixes.
 - Allow delivery only on `PASS`, or `CONCERNS` when residual risk is explicit and accepted by the authorized decision maker.
 - Require complete mandatory verification evidence for `PASS`; an environment-blocked required check cannot be silently treated as a pass.
+- One review covers one bounded diff. Re-review only unresolved findings and post-review changes; do not duplicate an already satisfied review gate.
 
 ## Delivery gate
 

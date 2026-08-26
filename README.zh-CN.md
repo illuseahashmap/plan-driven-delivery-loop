@@ -4,7 +4,7 @@
 [![Agent Skill](https://img.shields.io/badge/agent-skill-111827)](SKILL.md)
 [![GitHub stars](https://img.shields.io/github/stars/illuseahashmap/plan-driven-delivery-loop?style=social)](https://github.com/illuseahashmap/plan-driven-delivery-loop)
 
-一个面向 Codex 等编码 Agent 的工作流 skill：让软件开发从短期计划和长期约束出发，经过需求、设计、实现、单元测试、真实浏览器测试、问题审查，最终安全地完成 Git 交付并回到下一项计划。
+一个面向 Codex 等编码 Agent 的自适应工作流 skill：从短期计划和长期约束出发，按风险选择流程深度，完成实现、适当验证、计划同步、问题审查和授权 Git 交付，再回到下一项计划。
 
 **[English](README.md)**
 
@@ -22,27 +22,27 @@
 本 skill 将这些步骤固定成一个可恢复、可验证的闭环：
 
 ```text
-查看短期计划
-→ 查看长期计划约束
-→ 需求分析
-→ 方案设计
-→ 编码实现
-→ 单元测试
-→ 实际浏览器测试
-→ 更新短期计划/长期计划
-→ 问题审查
+选择深度：Fast | Standard | High-risk
+→ 查看短期计划和长期约束
+→ 需求/设计（深度随风险变化）
+→ 编码实现和适当验证
+→ 同步状态：done | partial | blocked
+→ 问题审查：self | independent | human
 → 授权后提交推送到远端
-→ 查看短期计划
+→ 重新查看短期计划
 ```
 
 ## 核心能力
 
 - 使用稳定 ID 关联需求、任务、测试证据、问题和后续工作；
 - 检查路线图、架构原则、里程碑和 ADR 约束；
+- 通过 Fast、Standard、High-risk 三种轨道按风险调整流程深度；
 - 对需求、设计和任务进行跨工件一致性检查；
 - 记录单元测试命令、退出码、数量及基线差异；
 - 在真实浏览器里验证用户可见结果、控制台和网络错误；
+- 每次验证尝试后同步计划：通过标记 `done`，未完成标记 `partial/in-progress`，无法安全继续标记 `blocked`；
 - 使用 `P1/P2/P3` 和 `PASS/CONCERNS/FAIL` 完成问题审查；
+- 高风险改动在能力可用时使用独立、只读、限定 diff 的审查；无法独立审查时明确标记限制；
 - 在流程开始阶段确认提交和推送授权，避免到交付阶段才发现无法闭环；
 - 必需的集成测试或容器测试无法执行时，只能标记为“部分验证”或“阻塞”，不能声称验证完成；
 - 只有在获得授权后才允许推送远端，禁止强推和无关提交；
@@ -85,6 +85,13 @@ cp -R plan-driven-delivery-loop ~/.codex/skills/plan-driven-delivery-loop
 ## 安全边界
 
 该 skill 不会自动获得部署、发送外部消息、删除无关文件、改写 Git 历史或推送远端的权限。仅调用 skill 不代表授权远端写入。skill 会在流程开始阶段确认提交和推送意图；远端写入必须由用户或仓库工作流明确授权。
+
+## 设计参考
+
+- [BMAD Method](https://github.com/bmad-code-org/BMAD-METHOD)：直接入口与完整规划入口并存，按上下文选择深度；
+- [OpenSpec](https://github.com/Fission-AI/OpenSpec)：以动作代替刚性阶段，计划和任务状态可在实施中持续更新；
+- [GitHub Spec Kit](https://github.com/github/spec-kit)：仅在存在实质歧义时增加澄清、检查清单和一致性分析门禁；
+- [Superpowers](https://github.com/obra/superpowers)：使用独立、只读、限定 Git diff 的代码审查上下文。
 
 ## 贡献
 

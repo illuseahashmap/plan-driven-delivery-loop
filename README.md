@@ -4,7 +4,7 @@
 [![Agent Skill](https://img.shields.io/badge/agent-skill-111827)](SKILL.md)
 [![GitHub stars](https://img.shields.io/github/stars/illuseahashmap/plan-driven-delivery-loop?style=social)](https://github.com/illuseahashmap/plan-driven-delivery-loop)
 
-An agent skill for shipping software through a traceable, plan-driven loop—from roadmap constraints to real-browser verification, issue review, and authorized Git delivery.
+An adaptive agent skill for shipping software through a traceable, plan-driven loop—from roadmap constraints to risk-sized verification, review, and authorized Git delivery.
 
 **[中文文档](README.zh-CN.md)**
 
@@ -15,39 +15,36 @@ Coding agents are good at producing code, but long-running work often drifts awa
 This skill turns delivery into an evidence-based loop:
 
 ```text
-┌─ Plan & Define ───────────────────────────┐
-│ Short-term plan → Long-term constraints  │
-│                         ↓                │
-│ Requirements → Design                    │
-└────────────────────┬─────────────────────┘
-                     ↓
-┌─ Build & Verify ─────────────────────────┐
-│ Implementation → Unit tests              │
-│                         ↓                │
-│ Real browser test                        │
-└────────────────────┬─────────────────────┘
-                     ↓
-┌─ Review & Deliver ───────────────────────┐
-│ Update plans → Issue review              │
-│                         ↓                │
-│ Authorized commit & push                 │
-│                         ↓                │
-│ Re-read short-term plan                  │
-└────────────────────┬─────────────────────┘
-                     └── next task ──→ repeat
+Select depth: Fast | Standard | High-risk
+                      ↓
+Short-term plan → Long-term constraints
+                      ↓
+Requirements/design (depth follows risk)
+                      ↓
+Implementation → Relevant verification
+                      ↓
+Sync status: done | partial | blocked
+                      ↓
+Review: self | independent | human
+                      ↓
+Authorized commit & push
+                      ↓
+Re-read short-term plan → next task / repeat
 ```
 
 ## What it enforces
 
 - Short-term tasks are selected only when their dependencies are satisfied.
 - Long-term roadmap, architecture, milestone, and ADR constraints are checked before design.
+- Fast, Standard, and High-risk tracks right-size ceremony without removing quality gates.
 - Requirements use stable IDs and observable acceptance criteria.
 - Design tasks map back to requirements and include verification methods.
 - Implementation stays focused and preserves unrelated changes.
 - Unit-test results include commands, exit status, counts, and baseline comparison.
 - User-facing changes are exercised in a real browser with an explicit success oracle.
-- Plans are updated only after verification passes.
+- Plans are synchronized after every verification attempt: `done` on success, `partial`/`in-progress` for incomplete work, and `blocked` when safe progress cannot continue.
 - Issue review uses `P1` / `P2` / `P3` findings and `PASS` / `CONCERNS` / `FAIL` decisions.
+- High-risk work uses an independent, read-only, diff-scoped reviewer when available; self-review is labeled honestly when independence is unavailable.
 - Commit and push intent is confirmed near the start, so delivery cannot become a last-minute surprise.
 - Missing required integration or container tests are reported as partial/blocked verification, never as a complete pass.
 - Remote pushes require explicit authorization; force-push and unrelated changes are prohibited.
@@ -105,9 +102,10 @@ This workflow does not grant permission to deploy, send external messages, rewri
 
 The workflow adapts proven patterns from:
 
-- [GitHub Spec Kit](https://github.com/github/spec-kit)
-- [OpenSpec](https://github.com/Fission-AI/OpenSpec)
-- [Superpowers](https://github.com/obra/superpowers)
+- [BMAD Method](https://github.com/bmad-code-org/BMAD-METHOD) — direct and planned entry paths with depth chosen from context.
+- [OpenSpec](https://github.com/Fission-AI/OpenSpec) — actions rather than rigid phases, living task state, and optional verification paths.
+- [GitHub Spec Kit](https://github.com/github/spec-kit) — optional clarification, checklist, and analysis gates for meaningful ambiguity.
+- [Superpowers](https://github.com/obra/superpowers) — independent, read-only review against requirements and a bounded Git diff.
 - [Playwright](https://github.com/microsoft/playwright)
 
 It remains a small, standalone skill and does not require those projects.
