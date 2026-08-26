@@ -15,17 +15,29 @@ Coding agents are good at producing code, but long-running work often drifts awa
 This skill turns delivery into an evidence-based loop:
 
 ```mermaid
-flowchart LR
-    A[Short-term plan] --> B[Long-term constraints]
-    B --> C[Requirements]
-    C --> D[Design]
-    D --> E[Implementation]
-    E --> F[Unit tests]
-    F --> G[Real browser test]
-    G --> H[Update plans]
-    H --> I[Issue review]
-    I --> J[Authorized commit & push]
-    J --> K[Re-read short-term plan]
+flowchart TB
+    subgraph P1["Plan & Define"]
+        direction LR
+        A[Short-term plan] --> B[Long-term constraints]
+        B --> C[Requirements]
+        C --> D[Design]
+    end
+
+    subgraph P2["Build & Verify"]
+        direction LR
+        E[Implementation] --> F[Unit tests]
+        F --> G[Real browser test]
+    end
+
+    subgraph P3["Review & Deliver"]
+        direction LR
+        H[Update plans] --> I[Issue review]
+        I --> J[Authorized commit & push]
+        J --> K[Re-read short-term plan]
+    end
+
+    D --> E
+    G --> H
     K -. next task .-> A
 ```
 
