@@ -1,7 +1,7 @@
 interface:
   display_name: "Plan-Driven Delivery Loop"
   short_description: "Adaptive plan-driven development and delivery"
-  default_prompt: "Use $plan-driven-delivery-loop to execute the next planned task. Select Fast, Standard, or High-risk depth from the change's risk; confirm Git delivery authorization early; then implement, verify, synchronize plan status, review at the appropriate independence level, and deliver within authorization."
+  default_prompt: "Use $plan-driven-delivery-loop to execute the next planned task. Select Fast, Standard, or High-risk depth from the change's risk; confirm Git delivery authorization early; design and verify user-operable behavior from a realistic entry through journey closure; then implement, synchronize plan status, review at the appropriate independence level, and deliver within authorization."
 
 policy:
   allow_implicit_invocation: false

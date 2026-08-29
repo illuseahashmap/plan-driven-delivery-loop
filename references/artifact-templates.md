@@ -53,6 +53,17 @@ Record this checkpoint at the start and repeat the short-term section after deli
   - Planned evidence: <unit/browser/integration/manual>
 - AC-02: ...
 
+## User journey contract
+- Actor and goal: <who is trying to achieve what>
+- Realistic start: <where/how the actor normally begins>
+- Discoverable entry: <navigation, command, API, link, or integration surface>
+- Preconditions: <auth, role, data, configuration, device; how the user satisfies them>
+- Critical path: <entry → action → feedback → next action → closure>
+- Completion signal: <what tells the user the goal succeeded>
+- Downstream use: <what the user can now do with the result>
+- Recovery: <cancel, retry, back, correction, or support path>
+- Intentional bypasses in verification: <none or unrelated setup with justification/evidence>
+
 ## Open decisions
 - DEC-01: <question, options, decision owner/status>
 ```
@@ -112,8 +123,11 @@ Acceptance criteria must be observable. Avoid criteria that only describe an imp
 ## Browser test
 - Route/URL: <route or N/A>
 - Preconditions: <server/auth/data/viewport>
+- Realistic start and entry: <landing surface and how the user reaches the capability>
 - Steps: <concise user-visible steps>
 - Oracle: <explicit expected user-visible outcome>
+- Closure/downstream proof: <how the result is confirmed and remains usable in the next step>
+- Setup bypasses: <none or unrelated preconditions bypassed, with justification>
 - Result: PASS | FAIL | BLOCKED | N/A
 - Console/network: <clean or relevant errors>
 - Evidence: <screenshot/trace/report/observed result>

@@ -38,6 +38,7 @@
 - 检查路线图、架构原则、里程碑和 ADR 约束；
 - 通过 Fast、Standard、High-risk 三种轨道按风险调整流程深度；
 - 对需求、设计和任务进行跨工件一致性检查；
+- 面向用户的改动从真实且可发现的入口出发，覆盖清晰的下一步操作，并最终形成可使用的结果或可恢复路径；
 - 记录单元测试命令、退出码、数量及基线差异；
 - 在真实浏览器里验证用户可见结果、控制台和网络错误；
 - 每次验证尝试后同步计划：通过标记 `done`，未完成标记 `partial/in-progress`，无法安全继续标记 `blocked`；
@@ -86,6 +87,7 @@ git clone https://github.com/illuseahashmap/plan-driven-delivery-loop.git \
 
 - [工件模板](references/artifact-templates.md)
 - [阶段检查清单](references/stage-checklists.md)
+- [用户旅程设计与验证](references/user-journey-validation.md)
 
 ## 安全边界
 
@@ -97,6 +99,10 @@ git clone https://github.com/illuseahashmap/plan-driven-delivery-loop.git \
 - [OpenSpec](https://github.com/Fission-AI/OpenSpec)：以动作代替刚性阶段，计划和任务状态可在实施中持续更新；
 - [GitHub Spec Kit](https://github.com/github/spec-kit)：仅在存在实质歧义时增加澄清、检查清单和一致性分析门禁；
 - [Superpowers](https://github.com/obra/superpowers)：使用独立、只读、限定 Git diff 的代码审查上下文。
+- [Playwright](https://github.com/microsoft/playwright)：用面向用户的交互验证用户可见行为；
+- [Testing Library](https://github.com/testing-library/react-testing-library)：让测试尽可能接近真实使用方式，避免依赖实现细节；
+- [Cucumber](https://github.com/cucumber/cucumber)：用 Given/When/Then 从用户视角连接需求与验证；
+- [Cypress Real World App](https://github.com/cypress-io/cypress-realworld-app)：覆盖认证、受控数据和完整业务流程的真实全栈测试示例。
 
 ## 贡献
 

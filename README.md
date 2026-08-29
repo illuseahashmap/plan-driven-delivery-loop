@@ -38,6 +38,7 @@ Re-read short-term plan → next task / repeat
 - Long-term roadmap, architecture, milestone, and ADR constraints are checked before design.
 - Fast, Standard, and High-risk tracks right-size ceremony without removing quality gates.
 - Requirements use stable IDs and observable acceptance criteria.
+- User-operable changes define a complete journey from a realistic, discoverable entry through understandable next actions to a usable result or recovery path.
 - Design tasks map back to requirements and include verification methods.
 - Implementation stays focused and preserves unrelated changes.
 - Unit-test results include commands, exit status, counts, and baseline comparison.
@@ -93,7 +94,7 @@ The skill prefers existing repository conventions. If no plan files exist, Fast 
 - unit-test and browser-test evidence;
 - issue-review findings and delivery records.
 
-See [artifact templates](references/artifact-templates.md) and [stage checklists](references/stage-checklists.md).
+See [artifact templates](references/artifact-templates.md), [stage checklists](references/stage-checklists.md), and the [user-journey validation guide](references/user-journey-validation.md).
 
 ## Safety boundaries
 
@@ -107,7 +108,10 @@ The workflow adapts proven patterns from:
 - [OpenSpec](https://github.com/Fission-AI/OpenSpec) — actions rather than rigid phases, living task state, and optional verification paths.
 - [GitHub Spec Kit](https://github.com/github/spec-kit) — optional clarification, checklist, and analysis gates for meaningful ambiguity.
 - [Superpowers](https://github.com/obra/superpowers) — independent, read-only review against requirements and a bounded Git diff.
-- [Playwright](https://github.com/microsoft/playwright)
+- [Playwright](https://github.com/microsoft/playwright) — tests user-visible behavior with resilient, user-facing interaction.
+- [Testing Library](https://github.com/testing-library/react-testing-library) — tests gain confidence by resembling real use and avoiding implementation details.
+- [Cucumber](https://github.com/cucumber/cucumber) — behavior-oriented Given/When/Then scenarios shared across product, development, and testing.
+- [Cypress Real World App](https://github.com/cypress-io/cypress-realworld-app) — realistic full-stack journeys with authentication, controlled data, and end-to-end workflows.
 
 It remains a small, standalone skill and does not require those projects.
 

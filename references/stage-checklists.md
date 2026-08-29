@@ -26,6 +26,9 @@ Use these checks for Standard, High-risk, cross-cutting, blocked, or resumed wor
 ## Requirements and design gate
 
 - Requirements describe observable behavior and value; design describes implementation choices.
+- For user-operable behavior, identify the intended actor and goal, the realistic starting state, the discoverable entry, user-visible steps, decision points, completion signal, downstream use, and recovery path.
+- Confirm the intended user can satisfy authentication, permission, data, configuration, and device preconditions without undocumented developer-only intervention.
+- Map every journey step to an implemented surface and state transition. Treat a route, API, command, or component with no intended entry as an orphan capability unless it is explicitly internal-only.
 - Each acceptance criterion has at least one planned verification method.
 - Each design task names dependencies, likely files, acceptance criteria, and verification.
 - Check cross-artifact consistency before implementation: no orphan requirement, unjustified task, unresolved contradiction, or violated long-term constraint.
@@ -43,6 +46,10 @@ Use these checks for Standard, High-risk, cross-cutting, blocked, or resumed wor
 ## Browser-test gate
 
 - Identify base URL, startup process, auth state, seeded data, viewport, and acceptance oracle before interacting.
+- Start from the product's normal landing surface or documented external entry. A direct URL is sufficient only when deep linking is itself the supported entry or upstream navigation is explicitly outside scope and separately evidenced.
+- Establish unrelated preconditions through setup when useful, but never seed, inject, or call an internal API to bypass the journey step under acceptance.
+- Verify the intended user can discover the entry, understand the next available action, complete the changed step, observe success/failure feedback, and use the resulting state in the promised next step.
+- For a change inside an existing journey, include enough upstream and downstream context to expose broken navigation, permissions, persistence, or handoff boundaries; scale the breadth to risk.
 - Use semantic/user-facing locators and accessibility snapshots where possible.
 - Re-observe page state after navigation or significant DOM changes.
 - Check visible result plus console and failed network activity relevant to the flow.
@@ -66,6 +73,7 @@ Use these checks for Standard, High-risk, cross-cutting, blocked, or resumed wor
 - Keep the reviewer read-only. The implementing Agent owns fixes.
 - If no independent reviewer is available, label the result `self (independence unavailable)`; High-risk delivery needs explicit acceptance of that limitation unless an equivalent repository gate exists.
 - Review requirements and long-term constraints against the final diff and evidence, not against the implementation summary alone.
+- Challenge the final diff for orphan features, missing navigation or invocation paths, impossible preconditions, dead ends, ambiguous next actions, invisible results, state that does not persist or propagate, and failures with no user recovery path.
 - Check correctness, regressions, edge cases, security/privacy, compatibility, failure handling, maintainability, test validity, browser console/network results, documentation, plan synchronization, and scope creep.
 - Label findings `P1` (blocking), `P2` (important), or `P3` (minor); include location/evidence, impact, and disposition.
 - Return each P1/P2 to the responsible stage and rerun affected verification after fixes.
